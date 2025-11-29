@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(-1);
 
   interface Question {
     question: string;
@@ -26,58 +26,34 @@ export default function Home() {
   ];
 
   return (
-    <>
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-        onClick={() => {
-          setIsOpen(true); 
-          setIndex(0);
-        }}
-      >
-        {
-          1
-        }
-      </button>
-
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-        onClick={() => {
-          setIsOpen(true); 
-          setIndex(1);
-        }}
-      >
-        {
-          2
-        }
-      </button>
-      
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-        onClick={() => {
-          setIsOpen(true); 
-          setIndex(2);
-        }}
-      >
-        {
-          3
-        }
-      </button>
-
-      <div className="flex flex-col border border-white-500 p-4 rounded-lg">
-        <div className="flex flex-col font-bold border-t border-gray-500 p-4 m-2">
-          What is a hackathon? 
+    <div className="flex flex-col border border-white-500 p-4 rounded-lg">
+      {faqQuestions.map((q, i) => (
+        <div key={i}>
+          <button
+            className="flex justify-between items-center w-full font-bold border-t border-gray-500 p-4 m-2 text-left hover:bg-gray-800 transition-colors"
+            onClick={() => {
+              if (index === i) {
+                setIsOpen(!isOpen);
+              } else {
+                setIndex(i);
+                setIsOpen(true);
+              }
+            }}
+          >
+            <div>{q.question}</div>
+            
+            <div className="text-xl">
+              {isOpen && index === i ? '-' : '+'}
+            </div>
+          </button>
+          
+          {isOpen && index === i && (
+            <div className="p-4 m-2 mt-0">
+              {q.answer}
+            </div>
+          )}
         </div>
-        {isOpen && index === 0 && faqQuestions.at(index)?.answer}
-
-        <div className="flex flex-col font-bold border-t border-gray-500 p-4 m-2">
-          Is there a theme?
-        </div>
-          {isOpen && index === 1 && faqQuestions.at(index)?.answer}
-        <div className="flex flex-col font-bold border-t border-gray-500 p-4 m-2">
-          How many people can be in a group?
-        </div>
-        {isOpen && index === 2 && faqQuestions.at(index)?.answer}
-      </div>
-    </>
+      ))}
+    </div>
   );
 }
